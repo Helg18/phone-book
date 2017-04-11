@@ -26,13 +26,14 @@ class ContactsController extends Controller
      */
     public function store(Request $request)
     {
-        if ($request->ajax()){
+        if ($request->isMethod('post')){
             $contact          = new Contacts();
-            $contact->name    = $request->input('name');
-            $contact->phone   = $request->input('phone');
-            $contact->email   = $request->input('email');
-            $contact->website = $request->input('website');
+            $contact->contact = $request->name;
+            $contact->phone   = $request->phone;
+            $contact->email   = $request->email;
+            $contact->website = $request->website;
             $contact->save();
+            //dd($contact);
             return response()->json(['success' => true, 'message' => 'Contacto guardado']);
         }
     }
@@ -70,13 +71,14 @@ class ContactsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        if ($request->ajax()) {
-            $contacto = Contacts::find($request->id);
-            $contact->name    = $request->input('name');
-            $contact->phone   = $request->input('phone');
-            $contact->email   = $request->input('email');
-            $contact->website = $request->input('website');
-            $contact->save();
+        if ($request->isMethod('PUT')) {
+            $contacto = Contacts::find($id);
+            $contacto->contact = $request->name;
+            $contacto->phone   = $request->phone;
+            $contacto->email   = $request->email;
+            $contacto->website = $request->website;
+            $contacto->save();
+            //dd($contacto);
             return response()->json(['success' => true, 'message' => 'Contacto actualizado']);
         }
     }
@@ -87,10 +89,12 @@ class ContactsController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Request $request, $id)
     {
-        $contacto = Contacts::find($id);
-        $contacto->delete();
-        return response()->json(['message' => 'Contacto eliminado']);
+        if ($request->isMethod('DELETE')) {
+            $contacto = Contacts::find($id);
+            $contacto->delete();
+            return response()->json(['message' => 'Contacto eliminado']);
+        }
     }
 }
