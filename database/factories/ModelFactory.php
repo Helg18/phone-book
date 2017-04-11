@@ -22,3 +22,13 @@ $factory->define(phonebook\User::class, function (Faker\Generator $faker) {
         'remember_token' => str_random(10),
     ];
 });
+
+
+$factory->define(phonebook\Contacts::class, function (Faker\Generator $faker) {
+    return [
+        'contact' => $faker->name,
+        'phone' => $faker->e164PhoneNumber,
+        'email' => $faker->unique()->safeEmail,
+        'website' => 'https://www.'.$faker->domainName,
+    ];
+});

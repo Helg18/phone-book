@@ -3,6 +3,7 @@
 namespace phonebook\Http\Controllers;
 
 use Illuminate\Http\Request;
+use phonebook\Contacts;
 
 class ContactsController extends Controller
 {
@@ -13,17 +14,8 @@ class ContactsController extends Controller
      */
     public function index()
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        $contacts = Contacts::all();
+        return response()->json($contacts);
     }
 
     /**
@@ -34,7 +26,15 @@ class ContactsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        if ($request->ajax()){
+            $contact          = new Contacts();
+            $contact->name    = $request->input('name');
+            $contact->phone   = $request->input('phone');
+            $contact->email   = $request->input('email');
+            $contact->website = $request->input('website');
+            $contact->save();
+            return response()->json(['success' => true, 'message' => 'Contacto guardado']);
+        }
     }
 
     /**
@@ -45,7 +45,8 @@ class ContactsController extends Controller
      */
     public function show($id)
     {
-        //
+        $contacts = Contacts::find($id);
+        return response()->json($contacts);
     }
 
     /**
@@ -56,7 +57,8 @@ class ContactsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $contacto = Contacts::find($id);
+        return response()->json($contacto);
     }
 
     /**
@@ -68,7 +70,15 @@ class ContactsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        if ($request->ajax()) {
+            $contacto = Contacts::find($request->id);
+            $contact->name    = $request->input('name');
+            $contact->phone   = $request->input('phone');
+            $contact->email   = $request->input('email');
+            $contact->website = $request->input('website');
+            $contact->save();
+            return response()->json(['success' => true, 'message' => 'Contacto actualizado']);
+        }
     }
 
     /**
@@ -79,6 +89,8 @@ class ContactsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $contacto = Contacts::find($id);
+        $contacto->delete();
+        return response()->json(['message' => 'Contacto eliminado']);
     }
 }
