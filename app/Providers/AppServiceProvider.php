@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Providers;
+namespace phonebook\Providers;
 
 use Illuminate\Support\ServiceProvider;
 
